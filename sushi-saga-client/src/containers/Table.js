@@ -13,7 +13,14 @@ const Table = (props) => {
       <h1 className="remaining">
         You have: ${ props.money} remaining!
       </h1>
+      
       <div className="table">
+      <div>
+        <form onSubmit={(event)=>props.addMoney(event)}>
+          <input type="number" name="money" value={props.valueToAdd} onChange={(event)=>props.getValue(event)}/>
+            <input type="submit"/>
+          </form>
+        </div>
         <div className="stack">
           {
             /* 

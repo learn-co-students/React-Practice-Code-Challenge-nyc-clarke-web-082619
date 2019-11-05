@@ -13,7 +13,8 @@ class App extends Component {
       sushis: [],
       currentIndex: 0,
       money: 100,
-      eatenSushi: []
+      eatenSushi: [],
+      valueToAdd: 0
     }
   }
 
@@ -58,12 +59,38 @@ class App extends Component {
   }
 
   handleMore = () => {
+    let num = this.state.sushis.length - this.state.currentIndex;
+    if(num<=4){    
+      let sushis = [...this.state.sushis];
+      for(let i=0; i<num; i++){
+        let sushi = sushis.pop()
+        sushis.unshift(sushi)
+      }
+      this.setState({
+        sushis: sushis,
+        currentIndex: 0
+      })
+      return false
+    }
     let currentIndex = this.state.currentIndex + 4;
     this.setState({
       currentIndex: currentIndex
     })
   }
 
+  addMoney = (event) => {
+    event.preventDefault();
+    this.setState(previousState=>{
+      return{
+      money: previousState.money + this.state.valueToAdd
+    }})
+  }
+
+  getValue = (event) => {
+    this.setState({
+      valueToAdd: parseInt(event.target.value)
+    })
+  }
 
   componentDidMount(){
     this.getSushis();
@@ -76,7 +103,8 @@ class App extends Component {
         <SushiContainer  sushis={this.state.sushis.slice(this.state.currentIndex, this.state.currentIndex+4)} 
         handleClick={this.handleClick}
         handleMore={this.handleMore}/>
-        <Table money={this.state.money} eatenSushi={this.state.eatenSushi}/>
+        <Table money={this.state.money} eatenSushi={this.state.eatenSushi} 
+        getValue={this.getValue} addMoney={this.addMoney}/>
       </div>
     );
   }
